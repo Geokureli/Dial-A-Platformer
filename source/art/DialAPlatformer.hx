@@ -239,7 +239,6 @@ class DialAPlatformer extends flixel.FlxSprite {
         // --> -v = a*t
         // --> -v/a = t
         var timeToApex = -_jumpVelocity / acceleration.y + _jumpTime;
-        trace('timeToApex:$timeToApex jumpTime:$_jumpTime');
         maxVelocity.x = jumpDistance / timeToApex / 2;
         
         if (slowDownTime < 0)

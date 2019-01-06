@@ -8,7 +8,7 @@ class Logo extends flixel.FlxSprite {
     public function new ():Void {
         super();
         
-        loadGraphic("assets/logo-animated.png", true, 37);
+        loadGraphic("assets/images/logo-animated.png", true, 37);
         
         animation.add("idleStart", [0]);
         animation.add("main", [0,1,1,0,2,3,4,5,6,6,7,8,9,9,10,11,12,12,12,12,13,14,15,16,17,17,17,17,18,19], 16, false);
@@ -17,7 +17,6 @@ class Logo extends flixel.FlxSprite {
         animation.play("idleStart");
         visible = false;
         scale.x = scale.y = 8.0 / FlxG.stage.stageWidth * FlxG.width;
-        trace('swf:${FlxG.stage.stageWidth} flx:${FlxG.width}');
         x = (FlxG.width  - width ) / 2;
         y = (FlxG.height - height) / 2;
     }

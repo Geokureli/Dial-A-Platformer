@@ -1,62 +1,35 @@
 package art;
 
+import utils.Save;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxBaseTilemap;
 import openfl.Assets;
 
 import flixel.FlxG;
-import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxTilemapGraphicAsset;
 import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
-import flixel.tile.FlxTilemap.GraphicAuto;
-import flixel.util.FlxSave;
 
 class EditorLevel extends flixel.tile.FlxTilemap {
     
     var _editingEnabled = true;
     var _drawing = false;
     var _adding = false;
-    var _save:FlxSave;
     var _mapName:String;
     
-    public function new (saveName:String) {
-        super();
-        
-        if(saveName != null)
-            initSave(saveName);
-    }
-    
-    function initSave(key:String):Void {
-        
-        _save = new FlxSave();
-        _save.bind(key);
-    }
+    public function new () {  super(); }
     
     function loadCsvSave(mapName:String):String {
         
-        if (_save == null)
+        if (FlxG.save == null)
             return null;
         
-        return Reflect.field(_save.data, mapName);
-    }
-    
-    public function clearSave(mapName:String):Bool {
-        
-        if (_save == null)
-            return false;
-        
-        Reflect.setField(_save.data, mapName, null);
-        return _save.flush();
+        return Save.get(mapName);
     }
     
     function saveCsv(mapName:String, data:String):Bool {
         
-        if (_save == null)
-            return false;
-        
-        Reflect.setField(_save.data, mapName, data);
-        return _save.flush();
+        return Save.set(mapName, data);
     }
     
     function saveCsvToClipboard() {

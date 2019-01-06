@@ -1,5 +1,6 @@
 package ui;
 
+import openfl.events.Event;
 import flixel.FlxG;
 import openfl.events.MouseEvent;
 import openfl.display.MovieClip;
@@ -12,6 +13,7 @@ class CheckBoxWrapper extends UIWrapper {
     var _check:MovieClip;
     var _down = false;
     var _over = false;
+    var _defaultValue = false;
     
     public function new (target:MovieClip, defaultValue:Bool) {
         super();
@@ -19,7 +21,7 @@ class CheckBoxWrapper extends UIWrapper {
         _target = target;
         _target.gotoAndStop("up");
         _check = get(_target, 'check');
-        value = defaultValue;
+        value = _defaultValue = defaultValue;
         
         _target.addEventListener(MouseEvent.MOUSE_OVER, onMouseChange);
         _target.addEventListener(MouseEvent.MOUSE_OUT , onMouseChange);
@@ -29,7 +31,21 @@ class CheckBoxWrapper extends UIWrapper {
         _target.addEventListener(MouseEvent.CLICK, onClick);
     }
     
-    function onClick(e:MouseEvent):Void { value = !value; }
+    override public function addChangeListener(listener:Event->Void) {
+        
+        _target.addEventListener(Event.CHANGE, listener);
+    }
+    
+    override public function removeChangeListener(listener:Event->Void) {
+        
+        _target.removeEventListener(Event.CHANGE, listener);
+    }
+    
+    function onClick(e:MouseEvent):Void {
+        
+        value = !value;
+        _target.dispatchEvent(new Event(Event.CHANGE));
+    }
     
     function onMouseChange(e:MouseEvent):Void {
         
@@ -44,4 +60,20 @@ class CheckBoxWrapper extends UIWrapper {
     }
     
     function set_value(v:Bool):Bool { return value = _check.visible = v; }
+    
+    override function get_saveValue():Dynamic {
+        
+        if (value != _defaultValue)
+            return value;
+        
+        return null;
+    }
+    
+    override function setSavedValue(value:Dynamic) {
+        
+        if (value != null) {
+            
+            this.value = value == true;
+        }
+    }
 }
