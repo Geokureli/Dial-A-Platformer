@@ -27,6 +27,7 @@ class FieldWrapper extends UIWrapper {
     var _isDefaultValue = false;
     var _type = DISTANCE;
     var _hasFocus = false;
+    var _startingValue = "";
     
     public function new (target:TextField, startingValue:String, type:String) {
         super();
@@ -70,12 +71,12 @@ class FieldWrapper extends UIWrapper {
         }
     }
     
-    public function addChangeListener(listener:Event->Void) {
+    override public function addChangeListener(listener:Event->Void) {
         
         _target.addEventListener(Event.CHANGE, listener);
     }
     
-    public function removeChangeListener(listener:Event->Void) {
+    override public function removeChangeListener(listener:Event->Void) {
         
         _target.removeEventListener(Event.CHANGE, listener);
     }
@@ -187,6 +188,25 @@ class FieldWrapper extends UIWrapper {
     }
     
     function get_name():String { return _target.name; }
+    
+    override function get_saveValue():Dynamic {
+        
+        if (_isDefaultValue || value == _startingValue)
+            return null;
+        
+        return value;
+    }
+    
+    override function setSavedValue(value:Dynamic) {
+        
+        if (value != null) {
+            
+            if (value == Math.POSITIVE_INFINITY)
+                this.value = "i";
+            else
+                this.value = Std.string(value);
+        }
+    }
 }
 
 class FakeChangeEvent extends Event {

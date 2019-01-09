@@ -1,5 +1,6 @@
 package ui;
 
+import utils.Save;
 import Main.GameState;
 import art.Hero;
 
@@ -273,6 +274,16 @@ class MenuWrapper extends UIWrapper {
         return target;
     }
     
+    inline function setupSave(name:String, wrapper:UIWrapper):Void {
+        
+        wrapper.addChangeListener(e -> save(name, wrapper));
+    }
+    
+    public function save(name:String, wrapper:UIWrapper):Void {
+        
+        Save.set(name, wrapper.saveValue);
+    }
+    
     inline function getField(name:String, startingValue = "", type = FieldWrapper.DISTANCE):FieldWrapper {
         
         var target:TextField = get(_target, name);
@@ -284,6 +295,8 @@ class MenuWrapper extends UIWrapper {
             field = new FieldWrapper(target, startingValue, type);
             _fields.push(field);
             Reflect.setField(this, "_" + name, field);
+            field.setSavedValue(Save.get(name));
+            setupSave(name, field);
             
         } else {
             
@@ -298,6 +311,8 @@ class MenuWrapper extends UIWrapper {
         var toggle = new CheckBoxWrapper(get(_target, name), defaultValue);
         _toggles.push(toggle);
         Reflect.setField(this, "_" + name, toggle);
+        toggle.setSavedValue(Save.get(name));
+        setupSave(name, toggle);
         return toggle;
     }
 }

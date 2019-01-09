@@ -6,18 +6,12 @@ import flixel.tile.FlxTilemap.GraphicAuto;
 
 class Level extends EditorLevel {
     
-    public function new (editorEnabled:Bool = true, forceLoadFile:Bool = false, resize:Bool = false) {
-        super(editorEnabled || !forceLoadFile || resize ? "day17" : null);
+    public function new () {
+        super();
         
-        _editingEnabled = editorEnabled;
+        _editingEnabled = true;
         
-        if (forceLoadFile)
-            clearSave("assets/level.csv");
-        
-        loadMapFromCSV("assets/level.csv", "assets/Tiles.png", 8, 8, AUTO);
-        
-        if (resize)
-            resizeAndSave(Std.int(FlxG.width / _tileWidth), Std.int(FlxG.height/_tileHeight));
+        loadMapFromCSV("assets/level.csv", "assets/images/Tiles.png", 8, 8, AUTO);
     }
     
     public function initWorld():Void {

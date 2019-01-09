@@ -1,14 +1,18 @@
 package art;
 
+import flixel.math.FlxPoint;
+
 class Hero extends DialAPlatformer {
     
     static inline var TILE_SIZE = 8;
     
     var _startY = 0.0;
+    var _spawn:FlxPoint;
     
     public function new (x:Float = 0, y:Float = 0) {
         super(x, y);
         
+        _spawn = FlxPoint.get(x, y);
         makeGraphic(12, 18, 0xFF6ABE30);
         
         // setupVariableJump(TILE_SIZE * 3.25, TILE_SIZE * 6.25, .35);
@@ -49,6 +53,9 @@ class Hero extends DialAPlatformer {
             
             _startY = y;
         }
+        
+        if (!isOnScreen())
+            reset(_spawn.x, _spawn.y);
     }
     
     override function jump(justPressed:Bool) {
