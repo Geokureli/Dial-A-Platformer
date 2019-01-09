@@ -8,8 +8,8 @@ class Save {
     
     inline static function init():Void {
         
-        if (FlxG.save.name != "day17")
-            FlxG.save.bind("day17");
+        if (FlxG.save.name != "Dial-A-Platformer")
+            FlxG.save.bind("Dial-A-Platformer", "Dial-A-Platformer_GeorgeRulz");
     }
     
     static public function get(name:String):Dynamic {
